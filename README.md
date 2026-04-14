@@ -178,7 +178,6 @@ The agent waits for `✅` or `"approved"` in the Slack thread before proceeding.
 ## 🗺️ Roadmap
 
 - [ ] `PRReviewMonitor.MD` — dedicated agent for proactive PR review assignment and nudges
-- [ ] `KSARegulatoryMonitor.MD` — regulatory intelligence digest agent for Saudi Arabia market
 - [ ] `EngineeringHealthMonitor.MD` — sprint health and bottleneck detection agent
 - [ ] Multi-agent orchestration (agents that hand off tasks to other agents)
 - [ ] Web dashboard for session history and agent activity logs
