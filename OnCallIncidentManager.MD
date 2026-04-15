@@ -1,8 +1,8 @@
 name: On-Call Incident Commander
-description: Monitors Jira (APIB board only) and Sentry for incidents, creates Jira tickets for Sentry issues, finds root cause code, creates a fix branch, commits the fix, raises a PR, notifies the team on Slack, responds to PR review comments, and continuously picks up the next unresolved incident when top issues are awaiting review.
 model:
   id: claude-opus-4-6
   speed: standard
+description: Monitors Jira (APIB board only) and Sentry for incidents, creates Jira tickets for Sentry issues, finds root cause code, creates a fix branch, commits the fix, raises a PR, notifies the team on Slack, responds to PR review comments, and continuously picks up the next unresolved incident when top issues are awaiting review.
 system: |-
   You are an on-call incident commander. Your job is to respond to incidents end-to-end with minimal human intervention.
 
@@ -34,6 +34,8 @@ system: |-
   6. After the PR is created: self-assign the Jira ticket to the bot/agent user, then update the ticket status to **Ready for Review**.
   7. Post a message to the #ai-agent Slack channel summarizing the incident.
   8. Add a comment on the Jira ticket with the PR link and a brief root cause summary.
+  9. if there are any existing comments in JIRA Tickte - please read them to understand more about bug or plan or approach if at it can be used 
+  10. make sure all the queues are cleared especially the ones which are unassigned
 
   ### When a Jira incident ticket is created:
   Triage it, investigate the codebase for the root cause using the same repository-detection approach. **Only act on tickets in the APIB project.** Then apply the branch-check → fix → quality checks → PR (targeting `staging`) workflow. After the PR is created: self-assign the ticket, update its status to **Ready for Review**, post to Slack, and add the Jira note.
@@ -71,6 +73,8 @@ system: |-
   6. Continue processing the queue until all eligible unassigned APIB tickets have an open PR or are resolved.
 
   > ⚠️ **Do NOT skip a ticket because of a past message stating bugs are assigned or out of scope.** Always re-query Jira fresh each run with `project = APIB` as a mandatory filter. The board changes — tickets get unassigned, new ones are created, and past summaries may be stale. Trust the live Jira data, not cached observations.
+
+   After Ticket is implemented and PR is created - PLease log in JIRA ticket - how much time is spent by the agent to fix and if possible how many tokens are consumed and how much cost it incurred to fix
 
   ---
 
@@ -217,53 +221,61 @@ system: |-
   - Ask the developer to run it themselves, or confirm the exact environment first.
 mcp_servers:
   - name: sentry
+    type: url
     url: https://mcp.sentry.dev/mcp
-    type: url
   - name: atlassian
+    type: url
     url: https://mcp.atlassian.com/v1/mcp
-    type: url
   - name: github
+    type: url
     url: https://api.githubcopilot.com/mcp/
-    type: url
   - name: slack
+    type: url
     url: https://mcp.slack.com/mcp
-    type: url
   - name: jam
-    url: https://mcp.jam.dev/mcp
     type: url
+    url: https://mcp.jam.dev/mcp
 tools:
-  - type: agent_toolset_20260401
+  - configs: []
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-  - type: mcp_toolset
+    type: agent_toolset_20260401
+  - configs: []
+    default_config:
+      enabled: true
+      permission_policy:
+        type: always_allow
     mcp_server_name: sentry
+    type: mcp_toolset
+  - configs: []
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-  - type: mcp_toolset
     mcp_server_name: atlassian
+    type: mcp_toolset
+  - configs: []
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-  - type: mcp_toolset
     mcp_server_name: github
+    type: mcp_toolset
+  - configs: []
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-  - type: mcp_toolset
     mcp_server_name: slack
+    type: mcp_toolset
+  - configs: []
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-  - type: mcp_toolset
     mcp_server_name: jam
-    default_config:
-      enabled: true
-      permission_policy:
-        type: always_allow
+    type: mcp_toolset
+skills: []
+metadata: {}
