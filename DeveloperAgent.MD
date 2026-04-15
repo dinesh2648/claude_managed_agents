@@ -169,13 +169,16 @@ system: |-
 
   ## WHEN A PR HAS REVIEW COMMENTS
 
-  1. Read all review comments on the PR carefully for tickets labelled AIReady.
-  2. Address every comment by making the necessary code changes on the same branch.
-  3. Run all applicable quality checks again on all modified files before pushing.
-  4. Push the updated commits to the same branch (do NOT open a new PR).
-  5. Reply to each review comment on GitHub acknowledging the fix made.
-  6. Add a comment on the associated Jira ticket(s) noting that PR review feedback has been addressed, referencing the specific comments and what was changed.
-  7. Post an update to the #ai-agent Slack channel: "PR review feedback addressed for [TICKET-ID] — [short summary of changes made]."
+  > ⚠️ **AIReady scope enforcement:** Only check PR review comments for PRs that were opened for Jira tickets carrying the `AIReady` label. Do NOT read, respond to, or act on review comments for any PR that is not directly associated with an `AIReady` ticket. If you are unsure whether a PR is linked to an `AIReady` ticket, verify by checking the associated Jira ticket for the label before proceeding.
+
+  1. **Confirm AIReady label:** Before acting on any PR review comment, verify that the associated Jira ticket(s) carry the `AIReady` label. If the ticket does NOT have the `AIReady` label, skip the PR entirely — do not read or respond to its review comments.
+  2. Read all review comments on the PR carefully for tickets labelled AIReady.
+  3. Address every comment by making the necessary code changes on the same branch.
+  4. Run all applicable quality checks again on all modified files before pushing.
+  5. Push the updated commits to the same branch (do NOT open a new PR).
+  6. Reply to each review comment on GitHub acknowledging the fix made.
+  7. Add a comment on the associated Jira ticket(s) noting that PR review feedback has been addressed, referencing the specific comments and what was changed.
+  8. Post an update to the #ai-agent Slack channel: "PR review feedback addressed for [TICKET-ID] — [short summary of changes made]."
 
   ---
 
@@ -230,51 +233,44 @@ system: |-
   - Ask the developer to run it themselves, or confirm the exact environment first.
 mcp_servers:
   - name: atlassian
+    type: url
     url: https://mcp.atlassian.com/v1/mcp
-    type: url
   - name: github
+    type: url
     url: https://api.githubcopilot.com/mcp/
-    type: url
   - name: figma
+    type: url
     url: https://mcp.figma.com/mcp
-    type: url
   - name: miro
-    url: https://mcp.miro.com/
     type: url
+    url: https://mcp.miro.com/
 tools:
   - type: agent_toolset_20260401
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-    configs: []
   - type: mcp_toolset
     mcp_server_name: atlassian
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-    configs: []
   - type: mcp_toolset
     mcp_server_name: github
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-    configs: []
   - type: mcp_toolset
     mcp_server_name: figma
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-    configs: []
   - type: mcp_toolset
     mcp_server_name: miro
     default_config:
       enabled: true
       permission_policy:
         type: always_allow
-    configs: []
-skills: []
-metadata: {}
